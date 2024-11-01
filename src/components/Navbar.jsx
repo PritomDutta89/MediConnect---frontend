@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [clickedPage, setClickedPage] = useState("Home");
+  const [token, setToken] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -24,41 +26,58 @@ const Navbar = () => {
             Medi<span className="text-[#5F6FFF]">Connect</span>
           </span>
         </a>
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <button
-            type="button"
-            className="text-white bg-[#5F6FFF] font-medium rounded-lg text-[0.6rem] md:text-sm px-2 md:px-4 py-1 md:py-2 text-center "
-            onClick={() => navigate("/login")}
-          >
-            Create account
-          </button>
 
-          <button
-            data-collapse-toggle="navbar-cta"
-            type="button"
-            className="inline-flex items-center p-2 md:p-2 w-7 md:w-10 h-7 md:h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
-            aria-controls="navbar-cta"
-            aria-expanded="false"
-            onClick={() => setToggle(!toggle)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
+        {token ? (
+          <div className="flex md:order-2 gap-2 space-x-3 md:space-x-0 rtl:space-x-reverse ">
+            <img
+              src={assets.profile_pic}
+              alt="icon"
+              className="w-[2rem] rounded-full"
+            />
+            <img
+              src={assets.dropdown_icon}
+              alt="icon"
+              className="w-[0.6rem] cursor-pointer"
+              onClick={() => setShowMenu(!showMenu)}
+            />
+          </div>
+        ) : (
+          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <button
+              type="button"
+              className="text-white bg-[#5F6FFF] font-medium rounded-lg text-[0.6rem] md:text-sm px-2 md:px-4 py-1 md:py-2 text-center "
+              onClick={() => navigate("/login")}
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg>
-          </button>
-        </div>
+              Create account
+            </button>
+
+            <button
+              data-collapse-toggle="navbar-cta"
+              type="button"
+              className="inline-flex items-center p-2 md:p-2 w-7 md:w-10 h-7 md:h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
+              aria-controls="navbar-cta"
+              aria-expanded="false"
+              onClick={() => setToggle(!toggle)}
+            >
+              <span className="sr-only">Open main menu</span>
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
 
         <div
           className={`items-center justify-between ${
@@ -130,6 +149,38 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
+
+        {showMenu && (
+          <div className="absolute z-10 top-[4.2rem] right-[6rem] bg-slate-50 rounded-sm p-3 text-[0.9rem] font-medium flex flex-col gap-2">
+            <p
+              onClick={() => {
+                navigate("/my-profile");
+                setShowMenu(false);
+              }}
+              className="cursor-pointer hover:bg-slate-400 hover:rounded-md hover:p-1"
+            >
+              My Profile
+            </p>
+            <p
+              onClick={() => {
+                navigate("/my-appointments");
+                setShowMenu(false);
+              }}
+              className="cursor-pointer hover:bg-slate-400 hover:rounded-md hover:p-1"
+            >
+              My Appointment
+            </p>
+            <p
+              onClick={() => {
+                setToken(false);
+                setShowMenu(false);
+              }}
+              className="cursor-pointer hover:bg-slate-400 hover:rounded-md hover:p-1"
+            >
+              Logout
+            </p>
+          </div>
+        )}
       </div>
     </nav>
   );
